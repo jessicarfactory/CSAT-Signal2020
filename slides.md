@@ -10,8 +10,6 @@
 <br>
 ![Build and Repeat Session pptx (4)](https://user-images.githubusercontent.com/34189788/94626392-ed15df80-02b2-11eb-959d-401ad523c1d1.jpg)
 <br>
-![Build and Repeat Session pptx (5)](https://user-images.githubusercontent.com/34189788/94626423-fa32ce80-02b2-11eb-8280-de3ca7faf4c0.jpg)
-<br>
 ![Build and Repeat Session pptx (6)](https://user-images.githubusercontent.com/34189788/94626447-09198100-02b3-11eb-9a9a-8b8319b1cd41.jpg)
 <br>
 ![Build and Repeat Session pptx (7)](https://user-images.githubusercontent.com/34189788/94626491-1a628d80-02b3-11eb-990f-c57b486808fe.jpg)
