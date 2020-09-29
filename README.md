@@ -3,15 +3,9 @@
 
 ## **This repo and its accompanying instructions outline the pathway to setting up an end-to-end testing, integration and deployment workflow. We will be using bash scripts, the twilio CLI, APIs and some Node.js code.**
 
-In our example, we will be starting a new Twilio project from scratch. The project will build a Customer Satisfaction Survey via SMS. You can see the architecture diagram below.. 
+In our example, we will be starting a new Twilio project from scratch. The project will build a Customer Satisfaction Survey via SMS. You can see the architecture diagram below. 
 
-
-
-<p id="gdcalert1" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image1.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert2">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image1.png "image_tooltip")
-
+![Screen Shot 2020-09-30 at 12 11 35 AM](https://user-images.githubusercontent.com/34189788/94625854-ae335a00-02b1-11eb-8479-a4ba4c58a566.png)
 
 When using this repo as a reference for your future working, you can substitute the placeholder values for the account SID and auth token for your development, staging and production environments. 
 
@@ -177,13 +171,7 @@ $ npm start
 
 Now if you navigate to [http://localhost:3000/](http://localhost:3000/), your Twilio Serverless project should be live!
 
-
-
-<p id="gdcalert2" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image2.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert3">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image2.png "image_tooltip")
-
+![Screen Shot 2020-09-22 at 6 59 51 PM](https://user-images.githubusercontent.com/34189788/94625884-c4411a80-02b1-11eb-9f68-beda12520f2c.png)
 
 Next, you’ll want to delete the pre-made assets (_myproject > assets > _delete _index.html, message.private.js _and _style.css_), Function Templates (_myproject > functions > hello-world.js _and _private-message.js_) and the .twilio-functions file. 
 
@@ -212,33 +200,15 @@ The above command will have deployed the logger function to your Twilio dev envi
 
 Next, step into your Twilio console, to view your newly deployed service!
 
-
-
-<p id="gdcalert3" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image3.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert4">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image3.png "image_tooltip")
-
+<img width="1230" alt="Screen Shot 2020-09-24 at 11 33 32 PM" src="https://user-images.githubusercontent.com/34189788/94625904-cefbaf80-02b1-11eb-8eaf-641dbf7167ee.png">
 
 Jump into the Studio flow and assign the logger service to the endpoint within your Studio flow. You’ll need to make sure that your Studio Flow is completely free of any external URLs. 
 
-
-
-<p id="gdcalert4" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image4.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert5">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image4.png "image_tooltip")
-
+<img width="827" alt="Screen Shot 2020-09-24 at 11 41 17 PM" src="https://user-images.githubusercontent.com/34189788/94625909-d0c57300-02b1-11eb-8122-e8e32d6028bc.png">
 
 While you’re there, also update your environment, and function usage:
 
-
-
-<p id="gdcalert5" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image5.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert6">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image5.png "image_tooltip")
-
+<img width="761" alt="Screen Shot 2020-09-24 at 11 44 22 PM" src="https://user-images.githubusercontent.com/34189788/94625914-d1f6a000-02b1-11eb-9880-7afca883c1bb.png">
 
 And as always, hit **save **and **publish. **
 
