@@ -9,9 +9,9 @@ In our example, we will be starting a new Twilio project from scratch. The proje
 
 When using this repo as a reference for your future working, you can substitute the placeholder values for the account SID and auth token for your development, staging and production environments. 
 
-In this instance, we’ve opted to use three subaccounts to simulate the movement from environment to environment. 
+In this instance, we’ve opted to use three subaccounts to simulate the progress from environment to environment. 
 
-Note regarding external services: We will not be developing from the Strapi-side. Strapi’s headless CMS service will serve as an example for an external API-enabled database containing customer details i.e. name, job number etc. You can find more about Strapi in [their website](https://strapi.io/)
+Note regarding external services: We will not be developing from the Strapi-side. Strapi’s headless CMS service will serve as an example for an external API-enabled database containing customer details i.e. name, job number etc. You can find more about Strapi in [their website](https://strapi.io/).
 
 
 ## **Download code repository**
@@ -80,9 +80,46 @@ $ twilio profiles:create
 ```
 
 
-You will need your Twilio Account SID and Auth Token for the above action
+You will need your Twilio Account SID and Auth Token for the above action.
 
-Before running the bash command from the directory’s root, make sure that you’ve copied the .env example files, and replaced them with the correct user credentials for both your originating account and your target account. 
+Initialise the serverless plugin and create your new project to kick off the project structure creation. 
+
+`$ twilio serverless:init myproject` **← Feel free to name your project whatever you want**
+
+Navigate towards said project:
+
+
+```
+$ cd myproject
+```
+
+
+And initialise the server:
+
+
+```
+$ npm start
+```
+
+
+Now if you navigate to [http://localhost:3000/](http://localhost:3000/index.html), your Twilio Serverless project should be live!
+
+![Screen Shot 2020-09-22 at 6 59 51 PM](https://user-images.githubusercontent.com/34189788/94625884-c4411a80-02b1-11eb-9f68-beda12520f2c.png)
+
+Next, you’ll want to delete the pre-made assets (_myproject > assets > _delete _index.html, message.private.js _and _style.css_), Function Templates (_myproject > functions > hello-world.js _and _private-message.js_) and the .twilio-functions file. 
+
+With your project environment cleared up, it’s time to install your dependencies. In this instance, we’ll be using the following services:
+
+
+```
+$ npm install concurrently
+$ npm install custom-env
+$ npm install ngrok
+$ npm install axios 
+```
+
+
+Now, with your dependencies installed on your development environment using the Twilio Serverless Runtime project structure, you’ll need to look at the pre-made repo and use the .env.dev.example to set your environment variables inside your project. 
 
 Here’s a quick guide to which credentials/SIDs/tokens you should use in each instance:
 
@@ -141,7 +178,7 @@ Here’s a quick guide to which credentials/SIDs/tokens you should use in each i
   <tr>
    <td><code>LOGGER_SERVICE_URL=<a href="https://csat.ngrok.io/logs?token=abcdefghijk">https://csat.ngrok.io/logs?token=abcdefghijk</a></code>
    </td>
-   <td>Can remain in lieu of your own logger service
+   <td>The externally reachable URL for your logger service
    </td>
   </tr>
 </table>
@@ -149,46 +186,20 @@ Here’s a quick guide to which credentials/SIDs/tokens you should use in each i
 
 Save your newly updated “.env.dev” file and delete the example. 
 
-Initialise the serverless plugin and create your new project to kick off the project structure creation. 
-
-`$ twilio serverless:init myproject` **← Feel free to name your project whatever you want**
-
-Navigate towards said project:
+Firstly, copy the logger.js function from the pre-prepared repo, and paste it in the **functions** folder within your project. 
 
 
 ```
-$ cd myproject
+$ cd functions
+$ cp logger.js /Users/usr/csat-sms-form/myproject/functions
 ```
 
 
-And initialise the server:
+One of the last steps that you need to take before running your first bash script will be to set up a mock server. Both the logger service (logger.js) and the Studio HTTP widget will be connected to the mock server in its first instance. This mock service will simply respond with a 200/OK response whenever reached. You can find information about how to spin up your own mock service [here](https://learning.postman.com/docs/designing-and-developing-your-api/mocking-data/setting-up-mock/#:~:text=In%20Collections%20on%20the%20left%20of%20Postman%2C%20use%20the%20overview,or%20mock%20an%20existing%20one.). 
 
+The idea behind the way we’re incorporating services, is step by step. We want to up the complexity of our program in a very incremental manner. 
 
-```
-$ npm start
-```
-
-
-Now if you navigate to [http://localhost:3000/](http://localhost:3000/index.html), your Twilio Serverless project should be live!
-
-![Screen Shot 2020-09-22 at 6 59 51 PM](https://user-images.githubusercontent.com/34189788/94625884-c4411a80-02b1-11eb-9f68-beda12520f2c.png)
-
-Next, you’ll want to delete the pre-made assets (_myproject > assets > _delete _index.html, message.private.js _and _style.css_), Function Templates (_myproject > functions > hello-world.js _and _private-message.js_) and the .twilio-functions file. 
-
-With your project environment cleared up, it’s time to install your dependencies. In this instance, we’ll be using the following services:
-
-
-```
-$ npm install concurrently
-$ npm install custom-env
-$ npm install ngrok
-$ npm install axios 
-```
-
-
-Then navigate back to the root directory, enter into the functions folder and copy the logger.js function into the functions folder of your newly created project.
-
-Next, copy the folder bash_scripts to your new project folder, navigate to the root of the project, and then run this command: 
+With your mock service up and running, copy the folder **bash_scripts** to your new project, navigate to the root of the project, and then run this command: 
 
 
 ```
@@ -219,9 +230,9 @@ This can be done [in the console, under the numbers icon](https://www.twilio.com
 
 ## **Creating your Twilio testing account**
 
-Now, in order to simulate user behaviour within your development environment, you’ll firstly need to create an additional account, purely for programmatic testing. 
+Now, in order to simulate user behaviour within your development environment, you’ll firstly need to create an additional account that's completely independent from your project account with its own SID and auth token, purely for programmatic testing. 
 
-You can do this by running the create command through the CLI:
+Once you have you testing Twilio account set, run:
 
 
 ```
@@ -246,11 +257,19 @@ You’ll need these details in the following section on testing to create a func
 
 ## **Testing**
 
-Copy across the testing service folder to your project.
+Copy across the testing service folder `/test_service` to your project.
+
+The test service itself contains a file that spins up a server that will write the message body of the SMS messages that your Twilio testing phone number receives from your flow, and print them to a file. 
+
+The programme will parse your ngrok auth token, and use this to assign a custom domain name to your ngrok tunnel in order to keep it consistent, and externally accessible. 
+
+It’s possible to spin up your testing service using a free standard ngrok account, but you’ll have to bear in mind that ngrok assigns a one-time session ID for your url. As a reminder, this externally accessible URL is referenced as the TESTER_URL throughout the dependency documentation. We recommend you use a fixed URL, it will simplify the process.
+
+For the test service to operate, you must assign the ngrok public url as a webhook for the Twilio test account SMS number. Now, every time that test number gets an SMS, your test service will write the content of the SMS into a file called `test.txt .`
 
 At your first phase of testing, you’ll need to install the corresponding testing Library, which is in this case, Cypress. 
 
-Once installed, you will have to clean the cypress structure from the example tests and copy tests from the original:
+Once installed, you will have to clean the cypress structure from the example tests (delete file inside **integration** folder) and copy tests from the original:
 
 
 ```
@@ -258,34 +277,34 @@ $ npm install cypress --save-dev
 ```
 
 
-Copy across the testing service folder, located in the root directory to your new project.` `
+Next, we need to import our pre-made tests, also stored in the root directory. Copy the contents of the **cypress > integration **folder from the pre-prepared repository.  
 
-Next, we need to import our pre-made tests, also stored in the root directory. Copy the contents of both the **cypress > integration **and **cypress > support **folders. 
 
-These scripts will enable you to harness cypress’ GUI to test the functionality of your SMS flow and newly implemented logger service. 
+```
+$ cd ..
+$ cd cypress/integration
+$ cp *.* myproject/cypress/integration
+```
 
- \
+
+These scripts will enable you to harness Cypress’ GUI to test the functionality of your SMS flow. 
+
+ 
 Before you run these tests, make sure to check the phone number variables in your code and ensure that the number referenced in your code matches the number configured to your flow within the numbers section of the console of your Twilio development account. 
 
 And lastly, head to the package.json file within the repo, and copy across the below line of code to the scripts package within the package.json file within your project - and of course, hit save!
 
 
 ```
-"test-dev": "concurrently --kill-others \"node test_service/server.js\""
+"test-dev": "concurrently --kill-others \"$(npm bin)/cypress open\" \"node test_service/server.js\""
 ```
 
 
  
 
-The above script will use concurrently and custom-dev to run two separate Twilio instances. While one of these will of course be your flow, the other will be your newly-live testing service. 
+The above script will use concurrently to run two separate programs. One of them is the Cypress testing tool (which will be reading the test.txt file to see what has been received) and the other is the test_service which will be writing what the test number simulating a person is receiving. 
 
-For the following steps, you’ll need to have copied across the **test_service** folder to your project environment. 
-
-This contains a file that spins up a server that will write the message body of the SMS messages that your Twilio testing phone number receives from your flow, and print them to the console. These console messages are surfaced using ngrok to make the testing service externally accessible. This externally accessible URL is referenced as the TESTER_URL throughout the dependency documentation. 
-
-The correct deployment of your testing service is one of the central pillars of your automated testing, so make sure to go over this section carefully to ensure that you’re establishing a strong foundation for the rest of your project’s automated testing flow. 
-
-Now, for Cypress to be able to test against your flow, you’ll need to copy the cypress.env example from the root and update it based on the below guide:
+Now, for Cypress to be able to test against your flow, you’ll need to copy the cypress.env example from the root to your project and update it based on the below guide:
 
 
 <table>
@@ -352,30 +371,41 @@ Now, for Cypress to be able to test against your flow, you’ll need to copy the
 </table>
 
 
-Save the newly updated file within your project as **cypress.env.json**
+Save the newly updated file within your project as **cypress.env.json.**
 
-Once you’ve incorporated these tests, run the below command to open cypress and commence the testing sequence:
+You will also have to copy the contents of the 'csat-form-master >  Cypress > Integration > command.js into myproject > Cypress > Integration >  Command.js
+
+Cypress is a testing framework that originally targets Web interfaces. It is a very flexible framework and allows you to expand testing into SMS or any other communication interface by adding key communication modules into the Command.js file. In our project we have expanded Cypress to be able to support SMS communications and Studio flow testing.
+
+To start up your testing server while having Cypress running at the same time, run the following command:
 
 
 ```
-$ node_modules/.bin/cypress open  
+$ npm start test-dev
 ```
 
 
-You’re now ready to run your tests. 
+Your tests should show your testing number interacting with your studio flow within the Cypress testing framework, and work to automate the entire process of a user going through both the HAPPY and UNHAPPY customer experience paths. 
 
-Your tests should show your testing number interacting with your studio flow and automate the entire process of a user going through both the HAPPY and UNHAPPY customer experience paths. 
+This is the environment for you to develop your tests according to your user stories for the project at hand, and then work to develop your flow in a manner that meets your testing criteria. 
 
-This is the environment for you to develop your tests according to your user stories for the project at hand, and then work to develop your flow in a manner that meets your testing criteria. Remember - think testing and automation first. This will make your final build more robust and give it the strong foundation it needs to be continually repeated, improved and redeployed. 
+Remember - think testing and automation first. This will make your final build more robust and give it the strong foundation it needs to be continually repeated, improved and redeployed. 
 
 
 ## **Pushing to staging environment**
 
-Now we’ve reached the staging environment, it’s important to remember that we’re working from the minimal amount of dependencies, to the maximum. 
+Now we’ve reached the staging environment, it’s important to remember that we’re working from the minimal amount of dependencies, to the maximum. So the order of actions will be:
 
-In order to push to the staging environment, you’ll need to add the **studio **folder and its contents to your project. 
 
-You’ll also need to update the **.env.staging **file using the previously provided key/value tables for reference in filling out the credentials and add this to your project folder. 
+
+1. Get the Strapi or other database URLs for logging and storing the results of the SMS survey
+2. Deploy the logger Function into Staging
+3. Replicate the Studio flow from Development to Staging
+4. Connect the Studio Flow Webhook to the SMS phone number that we have in Staging
+
+In order to push to the staging environment, you’ll need to add the **studio **folder and its contents to your project. Studio should not be copied or imported manually from environment to environment. Instead, we will use the Studio API and node.js to automatically import the flow from the development environment, update the dependencies (changes from dev to staging: new logger service and database URLs) and add the webhook to the phone number.
+
+You’ll also need to update the **.env.staging **file using the previously provided key/value tables for reference in filling out the credentials and add this to your project folder using the credentials of your **staging account **as the target account. 
 
 Firstly, ensure that your terminal is using your appropriate Twilio staging profile, and in doing so, surface the account details for this account.
 
@@ -403,12 +433,31 @@ $ twilio profiles:create staging
 ```
 
 
-You can head to your [console](https://www.twilio.com/console) to grab your auth token and account SID for your staging environment and add these into your staging .env file, or alternatively use bash to export these variables within your programme:
+You can head to your [console](https://www.twilio.com/console) to grab your auth token and account SID for your staging environment and add these into your .env.staging file. 
+
+You’ll need to export the SID and token for the staging environment using these commands. This will inform Cypress that we’re now testing our flow within the staging environment. 
 
 
 ```
 $ export ACCOUNTSID_STAGING= 
 $ export TOKENSID_STAGING=
+```
+
+
+Now, ahead of running your most complex bash script, you’ll need to purchase an available number, which your bash script will use to attach to your flow. 
+
+
+```
+$ twilio api:core:incoming-phone-numbers:create \
+  --phone-number="+[available phone number in e.164 format]"
+```
+
+
+Add this number into your script as a variable, replacing the example:
+
+
+```
+mobile="+XXXXXXXXXX"
 ```
 
 
@@ -420,26 +469,22 @@ $ bash bash/deployStagingEnv.sh
 ```
 
 
-This is your most complex bash script. The script will select the correct Twilio profile to use, call fetchStudioFlow.js to push the flows and services from development to staging, and lastly, attach these to a phone number (you’ll see +12056198563 used throughout the example). The output of this script, along with the resultant SIDs, auth tokens and credentials are written to **logger-staging.out. **
+The script will assign your staging environment variables manually, before opening and running Cypress. 
 
-Before going ahead to testing in your staging environment, you’ll have to make sure that your testing credentials listed in your project’s personal cypress.env.json file are all up to date. 
-
-Next, head into the package.json folder, and copy the below line to the package.json file within your project folder:
+Here’s the line of code within your bash script which assigns the corresponding staging environment variables for you: 
 
 
 ```
-"test-staging": "concurrently --kill-others \"node test_service/server.js\""
+$(npm bin)/cypress open  --env flowNumber=$mobile,flowSid=$flowId,accountSIDFlow=$ACCOUNTSID_STAGING,authTokenFlow=$TOKEN_STAGING
 ```
 
-
-You should now have two testing scripts for each of your environments. 
 
 Perform your staging environment tests. 
 
 
 ## **Pushing to the production environment**
 
-For the final stage of your build, you’ll be pushing production-ready code. 
+For the final stage of your build, you’ll be pushing production-ready code. This deployment will be very similar to staging, except in this instance, you won’t be performing any testing. 
 
 First up, if you don’t have your production profile set-up and ready to go, here’s a refresher on how to create that:
 
@@ -450,7 +495,7 @@ $ twilio profiles:create production
 ```
 
 
-Next, you’ll need to surface both the account SID and auth token and get these added to your new environment file. 
+Next, you’ll need to surface both the account SID and auth token and get these added to your new environment file. Remember also to update the script with the phone number of your production environment.
 
 Use the .**env.production.example **as a guide:
 
@@ -463,31 +508,7 @@ Use the .**env.production.example **as a guide:
    </td>
   </tr>
   <tr>
-   <td><code>TESTER_URL</code>
-   </td>
-   <td>Externally accessible URL for your testing server 
-   </td>
-  </tr>
-  <tr>
-   <td><code>accountSID</code>
-   </td>
-   <td>Unique account SID identifier of the project you’ve created for your testing environment account
-   </td>
-  </tr>
-  <tr>
-   <td><code>authToken</code>
-   </td>
-   <td>Unique auth token for your  testing environment account
-   </td>
-  </tr>
-  <tr>
-   <td><code>testAccountNumber</code>
-   </td>
-   <td>Phone number tied to testing account
-   </td>
-  </tr>
-  <tr>
-   <td><code>flowSid</code>
+   <td><code>flowSidSource</code>
    </td>
    <td>Unique Flow SID identifier 
    </td>
@@ -495,29 +516,29 @@ Use the .**env.production.example **as a guide:
   <tr>
    <td><code>accountSIDFlow</code>
    </td>
-   <td>Account SID for the staging account hosting the flow
+   <td>Account SID for the development account hosting the flow
    </td>
   </tr>
   <tr>
    <td><code>authTokenFlow</code>
    </td>
-   <td>Auth token for the staging account hosting the flow
+   <td>Auth token for the development account hosting the flow
    </td>
   </tr>
   <tr>
-   <td><code>flowNumber</code>
+   <td><code>targetAccoundSid</code>
    </td>
-   <td>Phone number configured to the flow
-   </td>
-  </tr>
-  <tr>
-   <td><code>csatDB</code>
-   </td>
-   <td>External ngrok tunnel to the strapi database
+   <td>Account SID for the production account hosting the flow
    </td>
   </tr>
   <tr>
-   <td><code>loggerDb</code>
+   <td><code>targetAccountToken</code>
+   </td>
+   <td>Auth token for the production account hosting the flow
+   </td>
+  </tr>
+  <tr>
+   <td><code>Logger_service_URL=</code>
    </td>
    <td>External ngrok tunnel to logger function
    </td>
